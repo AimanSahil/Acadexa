@@ -95,12 +95,18 @@ class AuthRemoteDatasource {
   Future<UserCredential> signInWithApple() async {
     final AppleAuthProvider provider = AppleAuthProvider();
 
-    // Web
+    // ----------------------------------------------------------
+    // WEB
+    // ----------------------------------------------------------
+
     if (kIsWeb) {
       return await _auth.signInWithPopup(provider);
     }
 
-    // Android / iOS
+    // ----------------------------------------------------------
+    // ANDROID / IOS
+    // ----------------------------------------------------------
+
     return await _auth.signInWithProvider(provider);
   }
 
@@ -123,7 +129,6 @@ class AuthRemoteDatasource {
   Future<void> logout() async {
     await _auth.signOut();
 
-    // Sign out Google as well when applicable.
     if (!kIsWeb) {
       try {
         await GoogleSignIn.instance.signOut();
