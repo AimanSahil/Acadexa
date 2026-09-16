@@ -12,6 +12,8 @@ import '../../features/auth/presentation/pages/onboarding_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/dashboard/presentation/pages/dashboard_page.dart';
+import '../../features/goals/presentations/pages/goals_page.dart';
 import '../di/service_locator.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -87,7 +89,7 @@ final GoRouter appRouter = GoRouter(
           location == '/register' ||
           location == '/forgot-password' ||
           location == '/onboarding') {
-        return '/home';
+        return '/dashboard';
       }
 
       return null;
@@ -108,7 +110,7 @@ final GoRouter appRouter = GoRouter(
   // ROUTES
   // ==========================================================
 
-  routes: [
+  routes: <RouteBase>[
     // ========================================================
     // HOME
     // ========================================================
@@ -121,6 +123,29 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
+    // ========================================================
+    // DASHBOARD
+    // ========================================================
+
+    GoRoute(
+      path: '/dashboard',
+      name: 'dashboard',
+      builder: (context, state) {
+        return const DashboardPage();
+      },
+    ),
+
+     // ========================================================
+     // GOALS
+     // ========================================================
+
+   GoRoute(
+     path: '/goals',
+     name: 'goals',
+     builder: (context, state) {
+      return const GoalsPage();
+  },
+),
     // ========================================================
     // ONBOARDING
     // ========================================================
