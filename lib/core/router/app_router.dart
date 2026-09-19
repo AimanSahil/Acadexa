@@ -14,6 +14,8 @@ import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/goals/presentations/pages/goals_page.dart';
+import '../../features/subject/presentation/pages/subjects_page.dart';
+import '../../features/study_plan/presentation/pages/study_plans_page.dart';
 import '../di/service_locator.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -147,9 +149,26 @@ final GoRouter appRouter = GoRouter(
   },
 ),
     // ========================================================
+    // Subjects
+    // ========================================================
+   GoRoute(
+     path: '/subjects',
+     name: 'subjects',
+     builder: (context, state) => const SubjectsPage(),
+),
+    // ========================================================
+    // Study plans
+    // ========================================================
+    GoRoute(
+      path: '/study-plans',
+      name: 'study-plans',
+      builder: (context, state) {
+    return const StudyPlansPage();
+  },
+),
+    // ========================================================
     // ONBOARDING
     // ========================================================
-
     GoRoute(
       path: '/onboarding',
       name: 'onboarding',
@@ -160,11 +179,9 @@ final GoRouter appRouter = GoRouter(
         );
       },
     ),
-
     // ========================================================
     // LOGIN
     // ========================================================
-
     GoRoute(
       path: '/login',
       name: 'login',
@@ -175,11 +192,9 @@ final GoRouter appRouter = GoRouter(
         );
       },
     ),
-
     // ========================================================
     // REGISTER
     // ========================================================
-
     GoRoute(
       path: '/register',
       name: 'register',

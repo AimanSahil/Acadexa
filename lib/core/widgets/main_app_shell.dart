@@ -14,57 +14,85 @@ class MainAppShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.sizeOf(context).width;
+    final size = MediaQuery.sizeOf(context);
+    final width = size.width;
 
-    // Desktop
+    // ==========================================================
+    // DESKTOP
+    // ==========================================================
+
     if (width >= 1100) {
       return Scaffold(
-        backgroundColor: const Color(0xFF030617),
-        body: Row(
-          children: [
-            AppSidebar(
-              selectedRoute: selectedRoute,
-            ),
-
-            Expanded(
-              child: child,
-            ),
-          ],
+        backgroundColor: const Color(0xFF030418),
+        body: SizedBox.expand(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                width: 258,
+                child: AppSidebar(
+                  selectedRoute: selectedRoute,
+                ),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: child,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    // Tablet
+    // ==========================================================
+    // TABLET
+    // ==========================================================
+
     if (width >= 700) {
       return Scaffold(
-        backgroundColor: const Color(0xFF030617),
-        body: Row(
-          children: [
-            AppSidebar(
-          selectedRoute: selectedRoute,
-          collapsed: true,
-            ),
-            Expanded(
-              child: child,
-            ),
-          ],
+        backgroundColor: const Color(0xFF030418),
+        body: SizedBox.expand(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                width: 78,
+                child: AppSidebar(
+                  selectedRoute: selectedRoute,
+                  collapsed: true,
+                ),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: child,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    // Mobile
+    // ==========================================================
+    // MOBILE
+    // ==========================================================
+
     return Scaffold(
-      backgroundColor: const Color(0xFF030617),
+      backgroundColor: const Color(0xFF030418),
       drawer: Drawer(
         backgroundColor: const Color(0xFF050918),
-        width: 245,
+        width: 258,
         child: AppSidebar(
           selectedRoute: selectedRoute,
         ),
       ),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF030617),
+        backgroundColor: const Color(0xFF030418),
         elevation: 0,
+        scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         iconTheme: const IconThemeData(
           color: Colors.white,
@@ -77,7 +105,10 @@ class MainAppShell extends StatelessWidget {
           ),
         ),
       ),
-      body: child,
+      body: Align(
+        alignment: Alignment.topLeft,
+        child: child,
+      ),
     );
   }
 }
