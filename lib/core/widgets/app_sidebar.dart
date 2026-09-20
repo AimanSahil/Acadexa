@@ -92,7 +92,16 @@ class AppSidebar extends StatelessWidget {
                         '/study-plans',
                       ),
                     ),
-
+                    SidebarItem(
+                      icon: Icons.calendar_today_outlined,
+                      title: 'Calendar',
+                      selected: selectedRoute == '/calendar',
+                      collapsed: collapsed,
+                      onTap: () => _navigate(
+                        context,
+                        '/calendar',
+                      ),
+                    ),
                     SidebarItem(
                       icon: Icons.checklist_outlined,
                       title: 'Tasks',

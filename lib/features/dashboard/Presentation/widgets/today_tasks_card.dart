@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
@@ -34,7 +35,9 @@ class TodayTasksCard extends StatelessWidget {
               ),
 
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.go('/tasks');
+                },
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -87,7 +90,9 @@ class TodayTasksCard extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                context.go('/tasks');
+              },
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.textMuted,
                 padding: const EdgeInsets.symmetric(

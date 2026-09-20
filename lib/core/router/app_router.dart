@@ -16,6 +16,9 @@ import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/goals/presentations/pages/goals_page.dart';
 import '../../features/subject/presentation/pages/subjects_page.dart';
 import '../../features/study_plan/presentation/pages/study_plans_page.dart';
+import '../../features/calendar/presentation/pages/calendar_page.dart';
+import '../../features/tasks/presentation/pages/tasks_page.dart';
+import '../../features/exams/presentation/pages/exams_page.dart';
 import '../di/service_locator.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -164,6 +167,37 @@ final GoRouter appRouter = GoRouter(
       name: 'study-plans',
       builder: (context, state) {
     return const StudyPlansPage();
+  },
+),
+  // ========================================================
+  // CALENDAR
+  // ========================================================
+    GoRoute(
+     path: '/calendar',
+     name: 'calendar',
+     builder: (context, state) {
+    return const CalendarPage();
+  },
+),
+    // ========================================================
+    // TASKS
+    // ========================================================
+   GoRoute(
+     path: '/tasks',
+     name: 'tasks',
+     builder: (context, state) {
+    return const TasksPage();
+  },
+),
+    // ========================================================
+   // EXAMS
+   // ========================================================
+
+   GoRoute(
+     path: '/exams',
+     name: 'exams',
+     builder: (context, state) {
+    return const ExamsPage();
   },
 ),
     // ========================================================
