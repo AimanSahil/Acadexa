@@ -19,6 +19,9 @@ import '../../features/study_plan/presentation/pages/study_plans_page.dart';
 import '../../features/calendar/presentation/pages/calendar_page.dart';
 import '../../features/tasks/presentation/pages/tasks_page.dart';
 import '../../features/exams/presentation/pages/exams_page.dart';
+import '../../features/notes/presentation/pages/notes_page.dart';
+import '../../features/flashcards/presentation/pages/flashcards_page.dart';
+import '../../features/quizzes/presentation/pages/quizzes_page.dart';
 import '../di/service_locator.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -31,22 +34,18 @@ final GoRouter appRouter = GoRouter(
   // ==========================================================
   // REDIRECT
   // ==========================================================
-
   redirect: (context, state) async {
     final User? user = FirebaseAuth.instance.currentUser;
 
     final String location = state.matchedLocation;
-
     // ========================================================
     // USER IS NOT LOGGED IN
     // ========================================================
-
     if (user == null) {
       // Home is public
       if (location == '/home') {
         return null;
       }
-
       // Authentication pages are public
       if (location == '/login' ||
           location == '/register' ||
@@ -57,11 +56,9 @@ final GoRouter appRouter = GoRouter(
       // Everything else goes to home
       return '/home';
     }
-
     // ========================================================
     // USER IS LOGGED IN
     // ========================================================
-
     try {
       final DocumentSnapshot<Map<String, dynamic>> userDocument =
           await FirebaseFirestore.instance
@@ -73,11 +70,9 @@ final GoRouter appRouter = GoRouter(
 
       final bool onboardingCompleted =
           data?['onboardingCompleted'] == true;
-
       // ======================================================
       // ONBOARDING NOT COMPLETED
       // ======================================================
-
       if (!onboardingCompleted) {
         if (location != '/onboarding') {
           return '/onboarding';
@@ -85,11 +80,9 @@ final GoRouter appRouter = GoRouter(
 
         return null;
       }
-
       // ======================================================
       // ONBOARDING COMPLETED
       // ======================================================
-
       if (location == '/login' ||
           location == '/register' ||
           location == '/forgot-password' ||
@@ -110,11 +103,9 @@ final GoRouter appRouter = GoRouter(
       return null;
     }
   },
-
   // ==========================================================
   // ROUTES
   // ==========================================================
-
   routes: <RouteBase>[
     // ========================================================
     // HOME
@@ -127,11 +118,9 @@ final GoRouter appRouter = GoRouter(
         return const HomePage();
       },
     ),
-
     // ========================================================
     // DASHBOARD
     // ========================================================
-
     GoRoute(
       path: '/dashboard',
       name: 'dashboard',
@@ -139,11 +128,9 @@ final GoRouter appRouter = GoRouter(
         return const DashboardPage();
       },
     ),
-
      // ========================================================
      // GOALS
      // ========================================================
-
    GoRoute(
      path: '/goals',
      name: 'goals',
@@ -190,15 +177,40 @@ final GoRouter appRouter = GoRouter(
   },
 ),
     // ========================================================
-   // EXAMS
-   // ========================================================
-
+    // EXAMS
+    // ========================================================
    GoRoute(
      path: '/exams',
      name: 'exams',
      builder: (context, state) {
     return const ExamsPage();
   },
+),
+    // ========================================================
+    // NOTES
+    // ========================================================
+   GoRoute(
+     path: '/notes',
+     name: 'notes',
+     builder: (context, state) {
+    return const NotesPage();
+  },
+),
+    // ========================================================
+    // FLASHCARDS
+    // ========================================================
+    GoRoute(
+      path: '/flashcards',
+      name: 'flashcards',
+      builder: (context, state) => const FlashcardsPage(),
+), 
+    // ========================================================
+    // QUIZZES
+    // ========================================================
+    GoRoute(
+      path: '/quizzes',
+      name: 'quizzes',
+      builder: (context, state) => const QuizzesPage(),
 ),
     // ========================================================
     // ONBOARDING
@@ -239,11 +251,9 @@ final GoRouter appRouter = GoRouter(
         );
       },
     ),
-
     // ========================================================
     // FORGOT PASSWORD
     // ========================================================
-
     GoRoute(
       path: '/forgot-password',
       name: 'forgot-password',
