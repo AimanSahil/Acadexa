@@ -40,6 +40,10 @@ dependencies:
   fl_chart: ^1.0.0
   uuid: ^4.5.1
 
+  # File & Microphone Access
+  file_picker: ^13.1.0
+  record: ^6.2.1
+
   # Firebase
   firebase_core: ^4.0.0
   firebase_auth: ^6.0.0

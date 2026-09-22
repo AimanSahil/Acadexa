@@ -22,6 +22,7 @@ import '../../features/exams/presentation/pages/exams_page.dart';
 import '../../features/notes/presentation/pages/notes_page.dart';
 import '../../features/flashcards/presentation/pages/flashcards_page.dart';
 import '../../features/quizzes/presentation/pages/quizzes_page.dart';
+import '../../features/ai_tutor/presentation/pages/ai_tutor_page.dart';
 import '../di/service_locator.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -211,6 +212,14 @@ final GoRouter appRouter = GoRouter(
       path: '/quizzes',
       name: 'quizzes',
       builder: (context, state) => const QuizzesPage(),
+),
+    // ========================================================
+    // AI TUTOR
+    // ========================================================
+    GoRoute(
+      path: '/ai-tutor',
+      name: 'ai-tutor',
+      builder: (context, state) => const AiTutorPage(),
 ),
     // ========================================================
     // ONBOARDING
