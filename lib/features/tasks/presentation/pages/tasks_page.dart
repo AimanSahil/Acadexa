@@ -223,7 +223,7 @@ class _TasksPageState extends State<TasksPage> {
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF6D28D9).withOpacity(0.28),
+                color: const Color(0xFF6D28D9).withValues(alpha:0.28),
                 blurRadius: 20,
                 spreadRadius: -5,
               ),
@@ -314,7 +314,7 @@ class _TasksPageState extends State<TasksPage> {
                       ? [
                           BoxShadow(
                             color: const Color(0xFF6D28D9)
-                                .withOpacity(0.25),
+                                .withValues(alpha:0.25),
                             blurRadius: 12,
                           ),
                         ]
@@ -392,9 +392,9 @@ class _TasksPageState extends State<TasksPage> {
                         BoxShadow(
                           color: missed
                               ? const Color(0xFFEF4444)
-                                  .withOpacity(0.08)
+                                  .withValues(alpha: 0.08)
                               : const Color(0xFF7C3AED)
-                                  .withOpacity(0.08),
+                                  .withValues(alpha: 0.08),
                           blurRadius: 35,
                           spreadRadius: 8,
                         ),
@@ -566,7 +566,7 @@ class _TasksPageState extends State<TasksPage> {
 
     await showDialog<void>(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.72),
+      barrierColor: Colors.black.withValues(alpha:0.72),
       builder: (dialogContext) {
         return StatefulBuilder(
           builder: (context, setDialogState) {
@@ -596,7 +596,7 @@ class _TasksPageState extends State<TasksPage> {
                     boxShadow: [
                       BoxShadow(
                         color: const Color(0xFF5B21B6)
-                            .withOpacity(0.16),
+                            .withValues(alpha:0.16),
                         blurRadius: 35,
                         spreadRadius: 4,
                       ),
@@ -986,7 +986,7 @@ class _TasksPageState extends State<TasksPage> {
         _dialogLabel(label),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           dropdownColor: const Color(0xFF0B1028),
           icon: const Icon(
             Icons.keyboard_arrow_down_rounded,
@@ -1206,7 +1206,7 @@ class _TaskCard extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.18),
+            color: Colors.black.withValues(alpha: 0.18),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -1375,10 +1375,10 @@ class _TaskCard extends StatelessWidget {
         vertical: 7,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.10),
+        color: color.withValues(alpha:0.10),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: color.withOpacity(0.10),
+          color: color.withValues(alpha:0.10),
         ),
       ),
       child: Text(

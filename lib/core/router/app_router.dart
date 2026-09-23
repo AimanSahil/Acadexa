@@ -23,6 +23,8 @@ import '../../features/notes/presentation/pages/notes_page.dart';
 import '../../features/flashcards/presentation/pages/flashcards_page.dart';
 import '../../features/quizzes/presentation/pages/quizzes_page.dart';
 import '../../features/ai_tutor/presentation/pages/ai_tutor_page.dart';
+import '../../features/analytics/presentation/pages/analytics_page.dart';
+import '../../features/profile//presentation/pages/profile_page.dart';
 import '../di/service_locator.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -221,6 +223,22 @@ final GoRouter appRouter = GoRouter(
       name: 'ai-tutor',
       builder: (context, state) => const AiTutorPage(),
 ),
+    // ========================================================
+    // ANALYTICS
+    // ========================================================
+    GoRoute(
+      path: '/analytics',
+      name: 'analytics',
+      builder: (context, state) => const AnalyticsPage(),
+    ),
+     // ========================================================
+    // PROFILE
+    // ========================================================
+    GoRoute(
+      path: '/profile',
+      name: 'profile',
+      builder: (context, state) => const ProfilePage(),
+    ),
     // ========================================================
     // ONBOARDING
     // ========================================================

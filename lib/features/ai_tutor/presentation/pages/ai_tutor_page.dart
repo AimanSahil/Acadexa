@@ -625,7 +625,7 @@ class _AiTutorPageState extends State<AiTutorPage> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF7C3AED).withOpacity(0.10),
+                  color: const Color(0xFF7C3AED).withValues(alpha: 0.10),
                   blurRadius: 30,
                   spreadRadius: 4,
                 ),
@@ -938,7 +938,7 @@ class _AiTutorPageState extends State<AiTutorPage> {
         ),
         scrollDirection: Axis.horizontal,
         itemCount: _attachedFiles.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
           final file = _attachedFiles[index];
 
@@ -1219,7 +1219,7 @@ class _AiTutorPageState extends State<AiTutorPage> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.45),
+              color: Colors.black.withValues(alpha: 0.45),
               blurRadius: 25,
               offset: const Offset(0, 10),
             ),
@@ -1755,11 +1755,9 @@ Future<void> _attachDriveFile(GoogleDriveFile file) async {
       ),
     );
   }
-
   // ============================================================
   // MESSAGE
   // ============================================================
-
   void _showMessage(String message) {
     if (!mounted) return;
 
@@ -1775,11 +1773,9 @@ Future<void> _attachDriveFile(GoogleDriveFile file) async {
       );
   }
 }
-
 // ================================================================
 // MODELS
 // ================================================================
-
 class _TutorSession {
   const _TutorSession({
     required this.title,
