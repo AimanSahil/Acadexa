@@ -303,6 +303,7 @@ class _HowItWorksCardState extends State<_HowItWorksCard> {
               : [],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Icon + step
@@ -370,8 +371,6 @@ class _HowItWorksCardState extends State<_HowItWorksCard> {
                 height: 1.6,
               ),
             ),
-
-            const Spacer(),
 
             const SizedBox(height: 20),
 

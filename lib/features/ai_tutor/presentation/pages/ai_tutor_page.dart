@@ -5,6 +5,9 @@ import 'package:record/record.dart';
 import '../../../../core/widgets/main_app_shell.dart';
 import '../../data/services/google_drive_service.dart';
 import '../widgets/google_drive_picker.dart';
+import '../../data/services/gemini_ai_service.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+
 
 class AiTutorPage extends StatefulWidget {
   const AiTutorPage({super.key});
@@ -21,7 +24,9 @@ class _AiTutorPageState extends State<AiTutorPage> {
   final AudioRecorder _audioRecorder = AudioRecorder();
   final GoogleDriveService _googleDriveService =
     GoogleDriveService();
+  final GeminiAiService _geminiAiService = GeminiAiService();
 
+    bool _isSending = false;
   final List<_TutorSession> _sessions = [
     _TutorSession(
       title: 'Study Helper Algorithms',
@@ -777,42 +782,108 @@ class _AiTutorPageState extends State<AiTutorPage> {
       ),
     );
   }
+Widget _buildMessageBubble(_ChatMessage message) {
+  final bool isUser = message.isUser;
 
-  Widget _buildMessageBubble(_ChatMessage message) {
-    final bool isUser = message.isUser;
-
-    return Align(
-      alignment:
-          isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        constraints: const BoxConstraints(
-          maxWidth: 700,
-        ),
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
+  return Align(
+    alignment:
+        isUser ? Alignment.centerRight : Alignment.centerLeft,
+    child: Container(
+      constraints: const BoxConstraints(maxWidth: 700),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: isUser
+            ? const Color(0xFF4C1D95)
+            : const Color(0xFF0F172A),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
           color: isUser
-              ? const Color(0xFF4C1D95)
-              : const Color(0xFF0F172A),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: isUser
-                ? const Color(0xFF6D28D9)
-                : const Color(0xFF1E293B),
-          ),
-        ),
-        child: Text(
-          message.text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            height: 1.5,
-          ),
+              ? const Color(0xFF6D28D9)
+              : const Color(0xFF1E293B),
         ),
       ),
-    );
-  }
-
+      child: isUser
+          ? Text(
+              message.text,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            )
+          : MarkdownBody(
+              data: message.text,
+              selectable: true,
+              styleSheet: MarkdownStyleSheet(
+                p: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  height: 1.6,
+                ),
+                h1: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                h2: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                h3: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+                strong: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                em: const TextStyle(
+                  color: Colors.white,
+                  fontStyle: FontStyle.italic,
+                ),
+                listBullet: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+                code: const TextStyle(
+                  color: Color(0xFFE9D5FF),
+                  backgroundColor: Color(0xFF1E293B),
+                  fontSize: 13,
+                ),
+                codeblockDecoration: BoxDecoration(
+                  color: const Color(0xFF080D20),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: const Color(0xFF334155),
+                  ),
+                ),
+                blockquote: const TextStyle(
+                  color: Color(0xFFCBD5E1),
+                  fontSize: 14,
+                ),
+                blockquoteDecoration: const BoxDecoration(
+                  border: Border(
+                    left: BorderSide(
+                      color: Color(0xFFA78BFA),
+                      width: 3,
+                    ),
+                  ),
+                ),
+                horizontalRuleDecoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xFF334155),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+    ),
+  );
+}
   // ============================================================
   // CHAT COMPOSER
   // ============================================================
@@ -1557,155 +1628,127 @@ Future<void> _attachDriveFile(GoogleDriveFile file) async {
   // SESSION
   // ============================================================
 
-  void _loadSession(int index) {
-    setState(() {
+
+void _loadSession(int index) {
+  if (index < 0 || index >= _sessions.length) return;
+
+  setState(() {
+    _selectedSessionIndex = index;
+    _messages.clear();
+
+    _showAttachmentMenu = false;
+    _showMoreUploads = false;
+    _showMoreTools = false;
+  });
+}
+
+void _deleteSession(int index) {
+  if (index < 0 || index >= _sessions.length) return;
+
+  setState(() {
+    _sessions.removeAt(index);
+
+    if (_selectedSessionIndex == index) {
+      _selectedSessionIndex = null;
       _messages.clear();
-
-      if (index == 0) {
-        _messages.addAll([
-          const _ChatMessage(
-            text: 'Can you explain algorithms?',
-            isUser: true,
-          ),
-          const _ChatMessage(
-            text:
-                'Of course! An algorithm is a step-by-step '
-                'procedure used to solve a problem or perform '
-                'a computation.',
-            isUser: false,
-          ),
-          const _ChatMessage(
-            text:
-                'Would you like me to explain searching, '
-                'sorting, or graph algorithms?',
-            isUser: false,
-          ),
-        ]);
-      }
-    });
-  }
-
-  void _deleteSession(int index) {
-    setState(() {
-      _sessions.removeAt(index);
-
-      if (_selectedSessionIndex == index) {
-        _selectedSessionIndex = null;
-        _messages.clear();
-      } else if (_selectedSessionIndex != null &&
-          _selectedSessionIndex! > index) {
-        _selectedSessionIndex =
-            _selectedSessionIndex! - 1;
-      }
-    });
-  }
+      _attachedFiles.clear();
+    } else if (_selectedSessionIndex != null &&
+        _selectedSessionIndex! > index) {
+      _selectedSessionIndex =
+          _selectedSessionIndex! - 1;
+    }
+  });
+}
 
   // ============================================================
   // SEND MESSAGE
   // ============================================================
 
-  void _sendMessage() {
-    final text = _messageController.text.trim();
+Future<void> _sendMessage() async {
+  final text = _messageController.text.trim();
 
-    if (text.isEmpty && _attachedFiles.isEmpty) {
-      return;
+  if (text.isEmpty && _attachedFiles.isEmpty) {
+    return;
+  }
+
+  if (_isSending) {
+    return;
+  }
+
+  // File contents are not sent to Gemini yet.
+  if (_attachedFiles.isNotEmpty) {
+    _showMessage(
+      'File analysis is not connected yet. '
+      'Please send a text-only message.',
+    );
+    return;
+  }
+
+  if (_selectedSessionIndex == null) {
+    _startNewChat();
+  }
+
+  final String messageText = text;
+
+  setState(() {
+    _messages.add(
+      _ChatMessage(
+        text: messageText,
+        isUser: true,
+      ),
+    );
+
+    final index = _selectedSessionIndex;
+
+    if (index != null && index < _sessions.length) {
+      _sessions[index] = _TutorSession(
+        title: _sessions[index].title,
+        messages: _messages.length,
+      );
     }
 
-    if (_selectedSessionIndex == null) {
-      _startNewChat();
-    }
+    _messageController.clear();
+    _isSending = true;
+  });
 
-    final String messageText = text.isEmpty
-        ? 'Please analyze the attached file.'
-        : text;
+  try {
+    final String response =
+        await _geminiAiService.sendMessage(messageText);
+
+    if (!mounted) return;
 
     setState(() {
       _messages.add(
         _ChatMessage(
-          text: messageText,
-          isUser: true,
+          text: response,
+          isUser: false,
         ),
       );
 
-      if (_selectedSessionIndex != null) {
-        final index = _selectedSessionIndex!;
+      final index = _selectedSessionIndex;
 
-        if (index < _sessions.length) {
-          _sessions[index] = _TutorSession(
-            title: _sessions[index].title,
-            messages: _messages.length,
-          );
-        }
+      if (index != null && index < _sessions.length) {
+        _sessions[index] = _TutorSession(
+          title: _sessions[index].title,
+          messages: _messages.length,
+        );
       }
-
-      _messageController.clear();
     });
+  } catch (e) {
+    if (!mounted) return;
 
-    Future.delayed(
-      const Duration(milliseconds: 600),
-      () {
-        if (!mounted) return;
-
-        setState(() {
-          _messages.add(
-            _ChatMessage(
-              text: _generateTutorResponse(messageText),
-              isUser: false,
-            ),
-          );
-
-          if (_selectedSessionIndex != null) {
-            final index = _selectedSessionIndex!;
-
-            if (index < _sessions.length) {
-              _sessions[index] = _TutorSession(
-                title: _sessions[index].title,
-                messages: _messages.length,
-              );
-            }
-          }
-        });
-      },
+    _showMessage(
+      'Could not get a response from Gemini. '
+      'Please check your connection and Firebase AI Logic setup.',
     );
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isSending = false;
+      });
+    }
   }
-
-  String _generateTutorResponse(String text) {
-    final lower = text.toLowerCase();
-
-    if (lower.contains('photosynthesis')) {
-      return 'Photosynthesis is the process plants use to convert '
-          'light energy into chemical energy. It mainly occurs in '
-          'the chloroplasts and uses carbon dioxide and water to '
-          'produce glucose and oxygen.';
-    }
-
-    if (lower.contains('derivative') ||
-        lower.contains('calculus')) {
-      return 'A derivative measures how a function changes as its '
-          'input changes. For example, if f(x) = x², then '
-          'f′(x) = 2x.';
-    }
-
-    if (lower.contains('quiz')) {
-      return 'Sure! Here is a quick question:\n\n'
-          'Which data structure follows the FIFO principle?\n\n'
-          'A. Stack\n'
-          'B. Queue\n'
-          'C. Tree\n'
-          'D. Graph';
-    }
-
-    if (lower.contains('study')) {
-      return 'A useful study approach is to divide your work into '
-          'small focused sessions, actively recall the material, '
-          'practice problems, and review difficult topics over '
-          'multiple days.';
-    }
-
-    return 'I’m Acadexa Tutor. I can help you understand concepts, '
-        'solve practice problems, create quizzes, summarize study '
-        'materials, and build a study plan.';
-  }
+}
 
   // ============================================================
   // MENU HELPERS
