@@ -12,7 +12,7 @@ import '../../features/auth/presentation/pages/onboarding_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 
 import '../../features/home/presentation/pages/home_page.dart';
-import '../../features/dashboard/presentation/pages/dashboard_page.dart';
+import '../../features/dashboard/Presentation/Pages/dashboard_page.dart';
 import '../../features/goals/presentations/pages/goals_page.dart';
 import '../../features/subject/presentation/pages/subjects_page.dart';
 import '../../features/study_plan/presentation/pages/study_plans_page.dart';
