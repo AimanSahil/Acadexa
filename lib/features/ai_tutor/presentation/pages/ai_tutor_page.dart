@@ -1735,13 +1735,14 @@ Future<void> _sendMessage() async {
       }
     });
   } catch (e) {
-    if (!mounted) return;
+  if (!mounted) return;
 
-    _showMessage(
-      'Could not get a response from Gemini. '
-      'Please check your connection and Firebase AI Logic setup.',
-    );
-  } finally {
+  debugPrint('Gemini AI Tutor error: $e');
+
+  _showMessage(
+    'Gemini request failed: ${e.toString()}',
+  );
+} finally {
     if (mounted) {
       setState(() {
         _isSending = false;
@@ -1749,7 +1750,6 @@ Future<void> _sendMessage() async {
     }
   }
 }
-
   // ============================================================
   // MENU HELPERS
   // ============================================================
